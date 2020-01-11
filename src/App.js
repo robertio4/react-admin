@@ -1,26 +1,27 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import jsonServerProvider from 'ra-data-json-server';
+import FirebaseAuthProvider from './providers/firebaseAuthProvider';
+import firebaseConfig from './firebaseConfig';
+
+import AgregarUsuario from './components/AgregarUsuario';
+import ListadoUsuarios from './components/ListadoUsuarios';
+import CustomLogin from './components/Login';
+import CustomLayout from './components/Layout';
+
+const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
+const authProvider = FirebaseAuthProvider(firebaseConfig);
+
+const App = () => (
+  <Admin
+    dataProvider={dataProvider}
+    loginPage={CustomLogin}
+    authProvider={authProvider}
+    layout={CustomLayout}
+  >
+    <Resource name='users' list={ListGuesser} />
+  </Admin>
+);
 
 export default App;
