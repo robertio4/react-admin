@@ -1,55 +1,65 @@
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { borrarUsuarioAction } from '../actions/usuariosActions';
+import React, { useState } from 'react';
+import keyBy from 'lodash/keyBy';
+import { useMediaQuery } from '@material-ui/core';
 
-const ListadoCitas = () => {
-  const dispatch = useDispatch();
-  const borrarUsuario = id => dispatch(borrarUsuarioAction(id));
+import {
+  useQueryWithStore,
+  Datagrid,
+  TextField,
+  Pagination,
+  Loading,
+  List,
+  SimpleList
+} from 'react-admin';
 
-  // Obtener las citas del state
-  const usuarios = useSelector(state => state.usuarios);
+const elemetsPage = 5;
 
-  const mensaje =
-    Object.keys(usuarios.usuarios).length === 0
-      ? 'No Hay Usuarios'
-      : 'Listado Usuarios';
+const PostPagination = props => (
+  <Pagination perPage={elemetsPage} rowsPerPageOptions={[5, 10]} {...props} />
+);
+
+const CustomList = props => {
+  const { resource } = props;
+  const isSmall = useMediaQuery(theme => theme.breakpoints.down('sm'));
+
+  const [page, setPage] = useState(1);
+  const perPage = elemetsPage;
+  const { data, total, loading, error } = useQueryWithStore({
+    type: 'getList',
+    resource: resource,
+    payload: {
+      pagination: { page, perPage },
+      sort: { field: 'id', order: 'ASC' },
+      filter: {}
+    }
+  });
+
+  if (loading) {
+    return <Loading />;
+  }
+  if (error) {
+    return <p>ERROR: {error}</p>;
+  }
 
   return (
-    <div className='card mt-5'>
-      <div className='card-body'>
-        <h2 className='card-title text-center'>{mensaje}</h2>
-
-        <div className='lista-citas'>
-          {usuarios.usuarios.map(usuario => (
-            <div key={usuario.id} className='media mt-3'>
-              <div className='media-body'>
-                <h3 className='mt-0'>{usuario.mascota}</h3>
-                <p className='card-text'>
-                  <span>Nombre Dueño: </span> {usuario.propietario}
-                </p>
-                <p className='card-text'>
-                  <span>Fecha:</span> {usuario.fecha}
-                </p>
-                <p className='card-text'>
-                  <span>Hora:</span> {usuario.hora}{' '}
-                </p>
-                <p className='card-text'>
-                  <span>Sintomas: </span> <br />
-                  {usuario.sintomas}
-                </p>
-                <button
-                  className='btn btn-danger'
-                  onClick={() => borrarUsuario(usuario.id)}
-                >
-                  Borrar &times;
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
+    <List {...props} data={data} pagination={<PostPagination />}>
+      {isSmall ? (
+        <SimpleList
+          primaryText={record => `${record.first_name} ${record.last_name}`}
+          secondaryText={record => record.email}
+          tertiaryText={record => record.id}
+          linkType='show'
+        />
+      ) : (
+        <Datagrid rowClick='edit'>
+          <TextField source='id' sortable={false} />
+          <TextField source='email' sortable={false} />
+          <TextField source='first_name' sortable={false} />
+          <TextField source='last_name' sortable={false} />
+        </Datagrid>
+      )}
+    </List>
   );
 };
 
-export default ListadoCitas;
+export default CustomList;

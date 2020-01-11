@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Admin, Resource, ListGuesser } from 'react-admin';
 import jsonServerProvider from 'ra-data-json-server';
+import usersProvider from './providers/usersProvider';
 import FirebaseAuthProvider from './providers/firebaseAuthProvider';
 import firebaseConfig from './firebaseConfig';
 
@@ -15,12 +16,12 @@ const authProvider = FirebaseAuthProvider(firebaseConfig);
 
 const App = () => (
   <Admin
-    dataProvider={dataProvider}
+    dataProvider={usersProvider}
     loginPage={CustomLogin}
     authProvider={authProvider}
     layout={CustomLayout}
   >
-    <Resource name='users' list={ListGuesser} />
+    <Resource name='users' list={ListadoUsuarios} />
   </Admin>
 );
 
