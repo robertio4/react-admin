@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useContext } from 'react';
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -12,10 +11,9 @@ const FirebaseAuthProvider = (firebaseConfig: {}) => {
     try {
       const { user } = await auth.signInWithPopup(provider);
       console.log('HandleAuthLogin: user sucessfully logged in', user);
-      localStorage.setItem('token', JSON.stringify('adfasd'));
       return user;
     } catch (error) {
-      console.log('HandleAuthLogin: invalid credentials');
+      console.log('HandleAuthLogin: invalid user');
       throw new Error('Login error: invalid credentials');
     }
   };
@@ -25,8 +23,8 @@ const FirebaseAuthProvider = (firebaseConfig: {}) => {
   };
 
   const handleAuthError = error => {
-    console.log('HandleAuthLogin: invalid credentials', error);
-    return Promise.reject('Login error: invalid credentials');
+    console.log('HandleAuthLogin: invalid user', error);
+    return Promise.reject('Login error: invalid user');
   };
 
   const handleAuthCheck = () => {
@@ -42,7 +40,6 @@ const FirebaseAuthProvider = (firebaseConfig: {}) => {
       });
     });
   };
-  //auth.currentUser ? Promise.resolve() : Promise.reject();
 
   const handleGetPermissions = params => Promise.resolve();
 

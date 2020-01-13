@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { useLogin } from 'react-admin';
+import { useLogin, Login } from 'react-admin';
 
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import { Login } from 'react-admin';
-
-const CustomLoginForm = () => {
+const CustomLoginForm = props => {
   const [loading, setLoading] = useState(false);
-
   const login = useLogin();
 
   const handleLogin = async firebaseAuth => {
@@ -18,50 +15,27 @@ const CustomLoginForm = () => {
   };
 
   return (
-    <div>
+    <div className='login'>
       <CardActions>
         <Button
-          variant='raised'
+          variant='contained'
           type='submit'
           color='primary'
-          onClick={() => handleLogin('facebook')}
+          onClick={() => handleLogin()}
           disabled={loading}
         >
-          {loading && <CircularProgress size={18} thickness={2} />}
-          Login With Facebook
-        </Button>
-      </CardActions>
-      {/* <CardActions>
-        <Button
-          variant='raised'
-          type='submit'
-          color='primary'
-          onClick={() => handleLogin('twitter')}
-          disabled={loading}
-        >
-          {loading && <CircularProgress size={18} thickness={2} />}
-          Login With Twitter
-        </Button>
-      </CardActions>
-      <CardActions>
-        <Button
-          variant='raised'
-          type='submit'
-          color='primary'
-          onClick={() => handleLogin('google')}
-          disabled={loading}
-        >
-          {loading && <CircularProgress size={18} thickness={2} />}
+          <CircularProgress size={18} thickness={2} />
           Login With Google
         </Button>
-      </CardActions> */}
+      </CardActions>
     </div>
   );
 };
 
-const CustomLogin = () => (
+const CustomLogin = props => (
   <Login
-    children={<CustomLoginForm />}
+    {...props}
+    children={<CustomLoginForm {...props} />}
     backgroundImage='https://free-pptbackgrounds.com/wp-content/uploads/2019/08/background-blue-ppt-backgrounds-850x623.png'
   />
 );

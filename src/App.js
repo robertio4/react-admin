@@ -1,27 +1,25 @@
 import React from 'react';
 
-import { Admin, Resource, ListGuesser } from 'react-admin';
-import jsonServerProvider from 'ra-data-json-server';
-import usersProvider from './providers/usersProvider';
+import { Admin, Resource } from 'react-admin';
+import UsersProvider from './providers/usersProvider';
 import FirebaseAuthProvider from './providers/firebaseAuthProvider';
 import firebaseConfig from './firebaseConfig';
 
-import AgregarUsuario from './components/AgregarUsuario';
-import ListadoUsuarios from './components/ListadoUsuarios';
+import users from './components/users';
 import CustomLogin from './components/Login';
 import CustomLayout from './components/Layout';
 
-const dataProvider = jsonServerProvider('http://jsonplaceholder.typicode.com');
 const authProvider = FirebaseAuthProvider(firebaseConfig);
+const dataProvider = UsersProvider();
 
 const App = () => (
   <Admin
-    dataProvider={usersProvider}
     loginPage={CustomLogin}
-    authProvider={authProvider}
     layout={CustomLayout}
+    authProvider={authProvider}
+    dataProvider={dataProvider}
   >
-    <Resource name='users' list={ListadoUsuarios} />
+    <Resource name='users' {...users} />
   </Admin>
 );
 
