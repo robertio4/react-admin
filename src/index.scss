@@ -1,0 +1,51 @@
+html,
+body {
+  margin: 0;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+
+  header {
+    .avatar {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .login {
+    button {
+      width: 100%;
+      div {
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .username-field {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    div {
+      margin-right: 8px;
+    }
+  }
+
+  .list-page {
+    img {
+      height: 40px;
+    }
+  }
+
+  #menu-appbar {
+    a {
+      display: flex;
+      font-size: 1rem;
+      color: #158cba;
+      padding: 8px 16px;
+      letter-spacing: 0.00938em;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+        background-color: rgba(0, 0, 0, 0.08);
+      }
+    }
+  }
+}
